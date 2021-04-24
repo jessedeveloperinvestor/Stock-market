@@ -11,7 +11,7 @@ ts=TimeSeries(key=API_Key,output_format='pandas')
 
 def getprices():
 	ticket=share
-	data, meta_data=ts.get_weekly_adjusted(ticket)
+	data, meta_data=ts.get_daily_adjusted(ticket)
 	pprint(data.head(7))
 #	pprint(data['0. date'].head(7))
 	pprint(data['4. close'].head(7))
