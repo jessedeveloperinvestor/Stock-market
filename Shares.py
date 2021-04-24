@@ -6,7 +6,7 @@
 from alpha_vantage.timeseries import TimeSeries
 from pprint import pprint
 
-API_Key='KY74URGMWMKH6FJ8'
+API_Key='ALPHA_VANTAGE_KEY'
 ts=TimeSeries(key=API_Key,output_format='pandas')
 
 def getprices():
@@ -21,16 +21,7 @@ print('OLÁ, FAVOR INSERIR O TICKET DA AÇÃO E CLICAR EM ENTER')
 share=''
 try:
 	ticket=input()
-	n=0
-	while n<1:
-		share='B3SA3.SAO'
-		getprices()
-		n=n+1
-	n=0
-	while n<1:
-		share='PETR4.SAO'
-		getprices()
-		n=n+1
+	getprices()
 except:
 	ticket=share
 	n=0
