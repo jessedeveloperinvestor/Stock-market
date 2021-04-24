@@ -6,7 +6,7 @@
 from alpha_vantage.timeseries import TimeSeries
 from pprint import pprint
 
-API_Key='(api key)'
+API_Key='(API KEY)'
 ts=TimeSeries(key=API_Key,output_format='pandas')
 
 def getcloseprice():
