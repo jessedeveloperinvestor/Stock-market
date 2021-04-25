@@ -140,7 +140,7 @@ def results():
 
 	conn.close()
 results()
-print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+print('Please, wait 10 seconds, this is a test version and there is a limit for API calls')
 time.sleep(100)
 
 #REPEAT RESULTS FUNCTION - LOOP OF DAYS OF THE WEEK - INSIDE LOOP OF TICKERS:
