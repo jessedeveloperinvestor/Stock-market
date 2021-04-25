@@ -94,10 +94,10 @@ def results():
 			c.execute('''UPDATE shares (ticker, date, price) SET value = (?) WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice))
 			conn.commit()
 		except:
-			c.execute('DELETE FROM shares')
+			c.execute('DELETE FROM shares WHERE date = (SELECT MAX(1))')
 			conn.commit()
 			print('Hi there, all is good; I am updating the system.\nPlease run the main python software again')
-			quit()
+			#quit()
 
 	def lead_to_insert_or_update():
 		from alpha_vantage.timeseries import TimeSeries
@@ -141,19 +141,7 @@ def results():
 	conn.close()
 results()
 print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
-time.sleep(10)
-
-#TICKERS' DESCRIPTOR:
-def descriptor():
-	ticker=share
-	company=''
-	if stock_ticker=='B3SA3.SAO':
-		company='Brasil, Bolsa Balcão'
-	if stock_ticker=='PETR4.SAO':
-		company='Petrobras'
-	else:
-		company=stock_ticker
-	print('O ticker '+stock_ticker+' é da empresa '+company)
+time.sleep(100)
 
 #REPEAT RESULTS FUNCTION - LOOP OF DAYS OF THE WEEK - INSIDE LOOP OF TICKERS:
 
@@ -162,32 +150,44 @@ symbol=a1
 stock_ticker=symbol+'.SAO'
 
 def looping_different_tickers():
-	message='Please, wait 10 seconds, this is a test version anf there is a limit for API calls'
+	message='Please, wait 10 seconds, this is a test version and there is a limit for API calls'
+	#TICKERS' DESCRIPTOR:
+	def descriptor():
+		company=''
+		if stock_ticker=='B3SA3.SAO':
+			company='Brasil, Bolsa Balcão'
+		if stock_ticker=='PETR4.SAO':
+			company='Petrobras'
+		else:
+			company=stock_ticker
+		print('O ticker '+stock_ticker+' é da empresa '+company)
+
 	descriptor()
 	i=1
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
 	i=2
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
 	i=3
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
 	i=4
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
 	i=5
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
 	i=6
 	results()
 	print(message)
-	time.sleep(10)
+	time.sleep(100)
+
 looping_different_tickers()
 symbol=a2
 stock_ticker=symbol+'.SAO'
