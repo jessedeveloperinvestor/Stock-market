@@ -1,4 +1,13 @@
-#Run the function createtable() to create the table
+#RUN THE FOLLOWING LINES ON TERMINAL:
+#pip install alpha_vantage
+#pip install pandas
+#pip install sqlite3
+#pip install json
+#pip install requests
+#pip install time
+#pip install datetime
+
+#CREATE TABLE - Run the function createtable() to create the table
 from alpha_vantage.timeseries import TimeSeries
 import pandas as pd
 import time
@@ -140,36 +149,70 @@ def results():
 	#delete_ticker()
 
 	conn.close()
-
-#REPEAT RESULTS FUNCTION - LOOP OF TICKERS:
 results()
+print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+time.sleep(10)
 
+#TICKERS' DESCRIPTOR:
+def descriptor():
+	ticker=share
+	company=''
+	if stock_ticker=='B3SA3.SAO':
+		company='Brasil, Bolsa Balcão'
+	if stock_ticker=='PETR4.SAO':
+		company='Petrobras'
+	else:
+		company=stock_ticker
+	print('O ticker '+stock_ticker+' é da empresa '+company)
+
+#REPEAT RESULTS FUNCTION - LOOP OF DAYS OF THE WEEK - INSIDE LOOP OF TICKERS:
+
+
+symbol=a1
+stock_ticker=symbol+'.SAO'
+
+def looping_different_tickers():
+	descriptor()
+	i=1
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+	i=2
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+	i=3
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+	i=4
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+	i=5
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+	i=6
+	results()
+	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	time.sleep(10)
+looping_different_tickers()
 symbol=a2
 stock_ticker=symbol+'.SAO'
-i=1
-results()
-
+looping_different_tickers()
 # symbol=a3
-# stock_ticker=symbol+'.SAO'
-# i=2
-# results()
-
+#stock_ticker=symbol+'.SAO'
+# looping_different_tickers()
 # symbol=a4
-# stock_ticker=symbol+'.SAO'
-# i=3
-# results()
-
+#stock_ticker=symbol+'.SAO'
+# looping_different_tickers()
 # symbol=a5
-# stock_ticker=symbol+'.SAO'
-# i=4
-# results()
-
+#stock_ticker=symbol+'.SAO'
+# looping_different_tickers()
 # symbol=a6
-# stock_ticker=symbol+'.SAO'
-# i=5
-# results()
-
+#stock_ticker=symbol+'.SAO'
+# looping_different_tickers()
 # symbol=a7
-# stock_ticker=symbol+'.SAO'
-# i=6
-# results()
+#stock_ticker=symbol+'.SAO'
+# looping_different_tickers()
