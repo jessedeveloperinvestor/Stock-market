@@ -106,7 +106,6 @@ def results():
 			date=daterow
 			c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
 			conn.commit()
-			conn.commit
 
 	def lead_to_insert_or_update():
 		from alpha_vantage.timeseries import TimeSeries
