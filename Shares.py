@@ -34,8 +34,6 @@ def alpha_vantage_api():
 	data_daily_lastLowPrice = data_daily['3. low'][0]
 	data_daily_lastClosingPrice = data_daily['4. close'][0]
 	data_daily_lastTradingVolume = data_daily['5. volume'][0]
-	print(stock_ticker,'close price was ',data_daily_lastClosingPrice,' at ',daterow)
-	print(stock_ticker,'preço de fechamento era ',data_daily_lastClosingPrice,' no dia ',daterow)
 
 #ACTIVATOR:
 if b1==1:
@@ -68,9 +66,12 @@ def select():
 	print(c.fetchone())
 
 def update():
-	g=0
+	c.execute('SELECT * FROM shares')
+	[print(row) for row in c.fetchall()]
+	c.execute('UPDATE shares SET value = (?) WHERE (?) AND WHERE (?)',(data_daily_lastClosingPrice, data_daily_lastClosingPrice, daterow))
+	conn.commit()
 
-def decidetoinsertorupdate():
+def lead_to_insert_or_update():
 	from alpha_vantage.timeseries import TimeSeries
 	import pandas as pd
 	API_Key='KY74URGMWMKH6FJ8'
@@ -91,10 +92,14 @@ def decidetoinsertorupdate():
 		print('inserting')
 		insert()
 
+def show_database():
+	c.execute('SELECT * FROM shares')
+	[print(row) for row in c.fetchall()]
 
 #createtable()
-decidetoinsertorupdate()
+lead_to_insert_or_update()
 #insert()
 #select()
+#showdatabase()
 
 conn.close()
