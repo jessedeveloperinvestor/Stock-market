@@ -113,10 +113,10 @@ def show_database():
 	[print(row) for row in c.fetchall()]
 
 #createtable()
-lead_to_insert_or_update()
+#lead_to_insert_or_update()
 #insert()
 #select()
-#showdatabase()
+show_database()
 #delete_ticker()
 
 conn.close()
