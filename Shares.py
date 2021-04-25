@@ -1,79 +1,48 @@
-#SHARES
-#The software requires an API Alpha Vantage key
-#RUN THE FOLLOWING LINES ON TERMINAL:
-#pip install alpha_vantage
-#pip install pandas
+#Run the function createtable() to create the table
 from alpha_vantage.timeseries import TimeSeries
-from pprint import pprint
+import pandas as pd
+import time
+import datetime as dt
+import requests
+import sqlite3
+import time
+import datetime
+import json
 
+stock_ticker='B3SA3.SAO'
 API_Key='KY74URGMWMKH6FJ8'
-ts=TimeSeries(key=API_Key,output_format='json')
+ts = TimeSeries (key=API_Key, output_format = "pandas")
 
-#SHARES/AÇÕES:
-a='B3SA3.SAO'
-b='PETR4.SAO'
+   ### STOCK TIME SERIES > DAILY ADJUSTED ###
+        # Date / Open / High / Low / Close / Adjusted Close / Volume / Dividend / Split
+data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+        # data_daily['column name'][row number]
+daterow=meta_data
 
-def getcloseprice():
-	ticker=share
-	data=ts.get_daily_adjusted(ticker)
-	#return(data['4. close'].head(7))
-	return(data)
+data_daily_lastOpenPrice = data_daily['1. open'][0]
+data_daily_lastHighPrice = data_daily['2. high'][0]
+data_daily_lastLowPrice = data_daily['3. low'][0]
+data_daily_lastClosingPrice = data_daily['4. close'][0]
+data_daily_lastTradingVolume = data_daily['5. volume'][0]
 
-# def descriptor():
-# 	ticker=share
-# 	company=''
-# 	if ticker==a:
-# 		company='Brasil, Bolsa Balcão'
-# 	if ticker==b:
-# 		company='Petrobras'
-# 	else:
-# 		company=ticker
-# 	if ticker.type==str:
-# 		z='está habilitado'
-# 	if ticker.type==float:
-# 		z='não está habilitado'
-# 	print('O ticker '+ticker+z+' e é da empresa '+company)
+conn=sqlite3.connect('shares.db')# or (':memory:')
+c=conn.cursor()
 
-# def share_on_off():
-# 	print("PARA HABILITAR ESTA AÇÃO, ESCREVA 'OK', DESABILITAR 'NÃO OK' OU PODE DEIXAR EM BRANCO")
-# 	y=''
-# 	y=input()
-# 	try:
-# 		if y=='OK':
-# 			ticker=str(ticker)
-# 		if y=='NÃO OK':
-# 			ticker=float(ticker)
-# 	except:
-# 		 j=0
+def createtable():
+	c.execute("""CREATE TABLE shares (
+				ticker text,
+				date integer,
+				price real
+	)""")
 
-def list_builder():
-	k=1
-	#getcloseprice()
-	
-	#filter data, postioned to ',' and build list
-def database_manager():
-	k=2
-	#list_builder()
+p=data_daily_lastClosingPrice
+date=0#data_daily_date
+#'B3SA3.SAO', 2021-04-2"+''
+c.execute("INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ",
+			(stock_ticker, date, p))
 
-	#if a==b: update
-	#if a!=b: insert
+conn.commit()
+conn.close()
 
-def runner():
-	pprint(getcloseprice())
-	#share_on_off()
-	#descriptor()
-
-#OUTPUT ACTIONS:
-
-print('OLÁ, FAVOR INSERIR O TICKER DA AÇÃO E CLICAR EM ENTER')
-
-share=''
-try:
-	ticker=input()+'.SAO'
-	runner()
-except:
-	ticker=share
-	share=a
-	runner()
-	share=b
-	runner()
+print(data_daily_lastClosingPrice)
+print(daterow)
