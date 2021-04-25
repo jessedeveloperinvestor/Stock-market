@@ -91,7 +91,7 @@ def results():
 		try:
 			c.execute('SELECT * FROM shares')
 			[print(row) for row in c.fetchall()]
-			c.execute('''UPDATE shares (ticker, date, price) SET value = (?) WHERE value = (?) AND WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice, daterow))
+			c.execute('''UPDATE shares (ticker, date, price) SET value = (?) WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice))
 			conn.commit()
 		except:
 			c.execute('DELETE FROM shares')
