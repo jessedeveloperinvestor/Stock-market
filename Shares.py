@@ -23,8 +23,6 @@ a2='PETR4'
 a3=''
 a4=''
 a5=''
-a6=''
-a7=''
 
 #SHARES' ACTIVATOR:
 b1=1
@@ -32,178 +30,143 @@ b2=1
 b3=0
 b4=0
 b5=0
-b6=0
-b7=0
 
 #SELECT TICKER:
-symbol=a1
-stock_ticker=symbol+'.SAO'
-i=0
-
-#RESULTS:
-
-def results():
-	#ALPHA VANTAGE API:
-	def alpha_vantage_api():
-		API_Key='KY74URGMWMKH6FJ8'
-		ts = TimeSeries (key=API_Key, output_format = "pandas")
-		data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-		        # data_daily['column name'][row number]
-		daterow=meta_data['3. Last Refreshed'][i]
-		data_daily_lastClosingPrice = data_daily['4. close'][i]
-
-	#ACTIVATOR:
-	if b1==1:
-		alpha_vantage_api()
-	else:
-		print(symbol,' não está habilitado/ is not active')
-
-
-	conn=sqlite3.connect('shares.db')
-	c=conn.cursor()
-
-	def createtable():
-		c.execute("""CREATE TABLE shares (
-					ticker text,
-					date integer,
-					price real
-		)""")
-		conn.commit()
-
-	def insert():
-		from alpha_vantage.timeseries import TimeSeries
-		import pandas as pd
-		API_Key='KY74URGMWMKH6FJ8'
-		ts = TimeSeries (key=API_Key, output_format = "pandas")
-		data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-		daterow=meta_data['3. Last Refreshed']
-		data_daily_lastClosingPrice = data_daily['4. close'][i]
-		date=daterow
-		c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
-		conn.commit()
-
-	def select():
-		c.execute("SELECT * FROM shares WHERE ticker='B3SA3.SAO'")
-		#print(c.fetchall())
-		print(c.fetchone())
-
-	def update():
-		try:
-			c.execute('SELECT * FROM shares')
-			[print(row) for row in c.fetchall()]
-			c.execute('''UPDATE shares (ticker, date, price) SET value = (?) WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice))
-			conn.commit()
-		except:
-			c.execute('DELETE FROM shares WHERE date = (SELECT MAX(1))')
-			conn.commit()
-			print('Hi there, all is good; I am updating the system.\nPlease run the main python software again')
-			#quit()
-
-	def lead_to_insert_or_update():
-		from alpha_vantage.timeseries import TimeSeries
-		import pandas as pd
-		API_Key='KY74URGMWMKH6FJ8'
-		ts = TimeSeries (key=API_Key, output_format = "pandas")
-		data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-		daterow=meta_data['3. Last Refreshed']
-		data_daily_lastClosingPrice = data_daily['4. close'][i]
-		c.execute("SELECT * FROM shares")
-		k=list(c.fetchall())
-		y=str(k)
-		stk=str(stock_ticker)
-		dt=str(daterow)
-		if stk in y:
-			if dt in y:
-				print('updating')
-				update()
-		else:
-			print('inserting')
-			insert()
-
-	def delete_ticker():
-		try:
-			c.execute("DELETE FROM shares WHERE ticker = 'B3SA3.SAO'")
-		except:
-			c.execute('DELETE FROM shares')
-			conn.commit()
-
-	def show_database():
-		c.execute('SELECT * FROM shares')
-		[print(row) for row in c.fetchall()]
-
-	#createtable()
-	lead_to_insert_or_update()
-	#insert()
-	#select()
-	#show_database()
-	#delete_ticker()
-
-	conn.close()
-results()
-print('Please, wait 10 seconds, this is a test version and there is a limit for API calls')
-time.sleep(100)
-
-#REPEAT RESULTS FUNCTION - LOOP OF DAYS OF THE WEEK - INSIDE LOOP OF TICKERS:
-
-
 symbol=a1
 stock_ticker=symbol+'.SAO'
 
 def looping_different_tickers():
 	message='Please, wait 10 seconds, this is a test version and there is a limit for API calls'
-	#TICKERS' DESCRIPTOR:
-	def descriptor():
-		company=''
-		if stock_ticker=='B3SA3.SAO':
-			company='Brasil, Bolsa Balcão'
-		if stock_ticker=='PETR4.SAO':
-			company='Petrobras'
-		else:
-			company=stock_ticker
-		print('O ticker '+stock_ticker+' é da empresa '+company)
 
-	descriptor()
-	i=1
-	results()
-	print(message)
-	time.sleep(100)
-	i=2
-	results()
-	print(message)
-	time.sleep(100)
-	i=3
-	results()
-	print(message)
-	time.sleep(100)
-	i=4
-	results()
-	print(message)
-	time.sleep(100)
-	i=5
-	results()
-	print(message)
-	time.sleep(100)
-	i=6
-	results()
-	print(message)
-	time.sleep(100)
+#TICKERS' DESCRIPTOR:
+	company=''
+	if stock_ticker=='B3SA3.SAO':
+		company='Brasil, Bolsa Balcão'
+	if stock_ticker=='PETR4.SAO':
+		company='Petrobras'
+	else:
+		company=stock_ticker
+	print('O ticker '+stock_ticker+' é da empresa '+company)
 
-looping_different_tickers()
-symbol=a2
-stock_ticker=symbol+'.SAO'
-looping_different_tickers()
-# symbol=a3
-#stock_ticker=symbol+'.SAO'
-# looping_different_tickers()
-# symbol=a4
-#stock_ticker=symbol+'.SAO'
-# looping_different_tickers()
-# symbol=a5
-#stock_ticker=symbol+'.SAO'
-# looping_different_tickers()
-# symbol=a6
-#stock_ticker=symbol+'.SAO'
-# looping_different_tickers()
-# symbol=a7
-#stock_ticker=symbol+'.SAO'
-# looping_different_tickers()
+i=0
+
+#ALPHA VANTAGE API:
+def alpha_vantage_api():
+	API_Key='KY74URGMWMKH6FJ8'
+	ts = TimeSeries (key=API_Key, output_format = "pandas")
+	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+	        # data_daily['column name'][row number]
+	daterow=meta_data['3. Last Refreshed'][i]
+	data_daily_lastClosingPrice = data_daily['4. close'][i]
+
+#ACTIVATOR:
+if b1==1:
+	alpha_vantage_api()
+else:
+	print(symbol,' não está habilitado/ is not active')
+
+
+conn=sqlite3.connect('shares.db')
+c=conn.cursor()
+
+def createtable():
+	c.execute("""CREATE TABLE shares (
+				ticker text,
+				date integer,
+				price real
+	)""")
+	conn.commit()
+
+def insert():
+	from alpha_vantage.timeseries import TimeSeries
+	import pandas as pd
+	API_Key='KY74URGMWMKH6FJ8'
+	ts = TimeSeries (key=API_Key, output_format = "pandas")
+	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+	daterow=meta_data['3. Last Refreshed']
+	data_daily_lastClosingPrice = data_daily['4. close'][i]
+	date=daterow
+	c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
+	conn.commit()
+
+def select():
+	c.execute("SELECT * FROM shares WHERE ticker='B3SA3.SAO'")
+	#print(c.fetchall())
+	print(c.fetchone())
+
+def update():
+	try:
+		c.execute('SELECT * FROM shares')
+		[print(row) for row in c.fetchall()]
+		c.execute('''UPDATE shares SET value = (?) WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice))
+		conn.commit()
+		print('Updated')
+	except:
+		print('Hi there, Python is got limitations.\nPlease, delete doubled and last seven days data of the target ticker throught a sqlite IDE,\nthen run this software again. Thank you.')
+		print('Olá, Python tem limitações,\nfavor apague linhas de banco de dados repetidas e dos últimos 7 dias para o ticker de ação específico por editor de SQLite3,\nentão rode este software de novo. Obrigado.')
+
+def lead_to_insert_or_update():
+	from alpha_vantage.timeseries import TimeSeries
+	import pandas as pd
+	API_Key='KY74URGMWMKH6FJ8'
+	ts = TimeSeries (key=API_Key, output_format = "pandas")
+	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+	daterow=meta_data['3. Last Refreshed']
+	data_daily_lastClosingPrice = data_daily['4. close'][i]
+	c.execute("SELECT * FROM shares")
+	k=list(c.fetchall())
+	y=str(k)
+	stk=str(stock_ticker)
+	dt=str(daterow)
+	if stk in y:
+		if dt in y:
+			print('updating')
+			update()
+	else:
+		print('inserting')
+		insert()
+
+def delete_ticker():
+	try:
+		c.execute("DELETE FROM shares WHERE ticker = 'B3SA3.SAO'")
+	except:
+		c.execute('DELETE FROM shares')
+		conn.commit()
+
+def show_database():
+	c.execute('SELECT * FROM shares')
+	[print(row) for row in c.fetchall()]
+
+#USE THIS TO INSERT THE LAST WEEK DATA:
+
+lead_to_insert_or_update()
+message='Please, wait 10 seconds, this is a test version and there is a limit for API calls'
+i=1
+print(message)
+time.sleep(100)
+lead_to_insert_or_update()
+i=2
+print(message)
+time.sleep(100)
+lead_to_insert_or_update()
+i=3
+print(message)
+time.sleep(100)
+lead_to_insert_or_update()
+i=4
+print(message)
+time.sleep(100)
+lead_to_insert_or_update()
+
+
+
+#CHOOSE SPECIFIC FUNTIONS:
+
+#createtable()
+#lead_to_insert_or_update()
+#insert()
+#select()
+#show_database()
+#delete_ticker()
+
+conn.close()
