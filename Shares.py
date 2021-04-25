@@ -54,10 +54,15 @@ def createtable():
 	conn.commit()
 
 def insert():
-	p=data_daily_lastClosingPrice
+	from alpha_vantage.timeseries import TimeSeries
+	import pandas as pd
+	API_Key='KY74URGMWMKH6FJ8'
+	ts = TimeSeries (key=API_Key, output_format = "pandas")
+	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+	daterow=meta_data['3. Last Refreshed']
+	data_daily_lastClosingPrice = data_daily['4. close'][0]
 	date=daterow
-	c.execute("INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ",
-				(stock_ticker, date, p))
+	c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
 	conn.commit()
 
 def select():
@@ -66,10 +71,14 @@ def select():
 	print(c.fetchone())
 
 def update():
-	c.execute('SELECT * FROM shares')
-	[print(row) for row in c.fetchall()]
-	c.execute('UPDATE shares SET value = (?) WHERE (?) AND WHERE (?)',(data_daily_lastClosingPrice, data_daily_lastClosingPrice, daterow))
-	conn.commit()
+	try:
+		c.execute('SELECT * FROM shares')
+		[print(row) for row in c.fetchall()]
+		c.execute('''UPDATE shares (ticker, date, price) SET value = (?) WHERE value = (?) AND WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice, daterow))
+		conn.commit()
+	except:
+		c.execute('DELETE FROM shares')
+		conn.commit()
 
 def lead_to_insert_or_update():
 	from alpha_vantage.timeseries import TimeSeries
@@ -92,6 +101,13 @@ def lead_to_insert_or_update():
 		print('inserting')
 		insert()
 
+def delete_ticker():
+	try:
+		c.execute("DELETE FROM shares WHERE ticker = 'B3SA3.SAO'")
+	except:
+		c.execute('DELETE FROM shares')
+		conn.commit()
+
 def show_database():
 	c.execute('SELECT * FROM shares')
 	[print(row) for row in c.fetchall()]
@@ -101,5 +117,6 @@ lead_to_insert_or_update()
 #insert()
 #select()
 #showdatabase()
+#delete_ticker()
 
 conn.close()
