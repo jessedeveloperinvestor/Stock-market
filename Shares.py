@@ -17,7 +17,7 @@ ts = TimeSeries (key=API_Key, output_format = "pandas")
         # Date / Open / High / Low / Close / Adjusted Close / Volume / Dividend / Split
 data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
         # data_daily['column name'][row number]
-daterow=meta_data
+daterow=meta_data['3. Last Refreshed']
 
 data_daily_lastOpenPrice = data_daily['1. open'][0]
 data_daily_lastHighPrice = data_daily['2. high'][0]
@@ -36,8 +36,7 @@ def createtable():
 	)""")
 
 p=data_daily_lastClosingPrice
-date=0#data_daily_date
-#'B3SA3.SAO', 2021-04-2"+''
+date=daterow
 c.execute("INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ",
 			(stock_ticker, date, p))
 
