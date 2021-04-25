@@ -34,14 +34,26 @@ def createtable():
 				date integer,
 				price real
 	)""")
+	conn.commit()
 
-p=data_daily_lastClosingPrice
-date=daterow
-c.execute("INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ",
-			(stock_ticker, date, p))
+def insert():
+	p=data_daily_lastClosingPrice
+	date=daterow
+	c.execute("INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ",
+				(stock_ticker, date, p))
+	conn.commit()
 
-conn.commit()
-conn.close()
+def select():
+	c.execute("SELECT * FROM shares")
+	conn.commit()
+
+
 
 print(data_daily_lastClosingPrice)
 print(daterow)
+
+#createtable()
+#insert()
+#select()
+
+conn.close()
