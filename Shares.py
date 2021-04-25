@@ -96,16 +96,8 @@ def results():
 		except:
 			c.execute('DELETE FROM shares')
 			conn.commit()
-			from alpha_vantage.timeseries import TimeSeries
-			import pandas as pd
-			API_Key='KY74URGMWMKH6FJ8'
-			ts = TimeSeries (key=API_Key, output_format = "pandas")
-			data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-			daterow=meta_data['3. Last Refreshed']
-			data_daily_lastClosingPrice = data_daily['4. close'][i]
-			date=daterow
-			c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
-			conn.commit()
+			print('Hi there, all is good; I am updating the system.\nPlease run the main python software again')
+			quit()
 
 	def lead_to_insert_or_update():
 		from alpha_vantage.timeseries import TimeSeries
