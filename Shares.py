@@ -10,7 +10,6 @@
 #CREATE TABLE - Run the function createtable() to create the table
 from alpha_vantage.timeseries import TimeSeries
 import pandas as pd
-import time
 import datetime as dt
 import requests
 import sqlite3
@@ -172,30 +171,31 @@ symbol=a1
 stock_ticker=symbol+'.SAO'
 
 def looping_different_tickers():
+	message='Please, wait 10 seconds, this is a test version anf there is a limit for API calls'
 	descriptor()
 	i=1
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 	i=2
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 	i=3
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 	i=4
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 	i=5
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 	i=6
 	results()
-	print('Please, wait 10 seconds, this is a test version anf there is a limit for API calls')
+	print(message)
 	time.sleep(10)
 looping_different_tickers()
 symbol=a2
