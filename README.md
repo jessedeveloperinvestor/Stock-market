@@ -4,9 +4,8 @@
 ~DESCRIÇÃO DO CÓDIGO FONTE:
   O código fonte inicia-se com o arquivo Shares_database_builder.py para criar um database em SQLite3, tal código gera um arquivo chamado Shares.db.
 Então o arquivo Shares.py foi desenvolvido para ser customizável, possui várias funções criadas que podem ser chamadas individualmente e que, normalmente, algumas são chamadas.
-Fiz diversos experimentos para desenvolver o Shares de maneira mais automatizada e que, natural e automaticamente importasse, inserisse e atualizasse todos os dados de todos os tickers automaticamente, mas aparentemente o Python não reconhece uma função dentro de outra função (ou várias). O software cumpre todos os requisitos listados no arquivo projeto_alphavantage_abr21.pdf, exceto a função update que carece de melhoria, mas é contornada por um comando dado ao usuário que executa o código fonte:
-
-'Olá, Python tem limitações,\nfavor apague linhas de banco de dados repetidas e dos últimos 5 dias para o ticker de ação específico por editor de SQLite3,\nentão rode este software de novo. Obrigado.'.
+Fiz diversos experimentos para desenvolver o Shares de maneira mais automatizada e que, natural e automaticamente importasse, inserisse e atualizasse todos os dados de todos os tickers automaticamente, mas aparentemente o Python não reconhece uma função dentro de outra função (ou várias).
+  >>>>>O software cumpre todos os requisitos listados no arquivo projeto_alphavantage_abr21.pdf.
 
 ~ESPECIFICAÇÕES PARA CRIAÇÃO DO BANCO DE DADOS:
   É necessário instalar SQLite3, Python3, pip e as bibliotecas listadas no início do seguinte arquivo Shares_database_builder.py, através do terminal do OS (Windows, Linux ou MacOS) e executá-lo.
