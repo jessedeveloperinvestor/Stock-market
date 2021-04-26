@@ -24,3 +24,9 @@ O database a ser criado terá o nome Shares.db e será armazenado na mesma pasta
   Ou seja, estas são bibliotecas do Python necessárias ao funcionamento do software.
 Na seção #SHARES: pode-se cadastrar ativos/tickers diversos no software.
 Na seção #SHARES' ACTIVATOR: pode-se habilitar um ticker definindo b1=1, desabilitar b1=0; o número depois da letra b corresponde ao número em a1, a2 etc que representa a ordem do ticker escolhido.
+O #TICKERS' DESCRIPTOR: é um espaço para, inserindo mais:
+	if stock_ticker=='B3SA3.SAO':
+		company='Brasil, Bolsa Balcão'
+...que se possa nomear os tickers, visto que o API da Alpha Vantage e diversos APIs financeiros não ofertam dados sobre os nomes das empresas correspondentes aos tickers.
+  A seção #ALPHA VANTAGE API: inicia a importação de dados do API e armazenamento em listas/variáveis.
+A seção #ACTIVATOR: é a lógica que apenas permite executar o funcionamento padrão do código principal (Shares.py, com função lead_to_insert_or_update() sendo prioritária) em ativos/tickers habilitados.
