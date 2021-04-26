@@ -36,14 +36,14 @@ symbol=a1
 stock_ticker=symbol+'.SAO'
 
 #TICKERS' DESCRIPTOR:
-	company=''
-	if stock_ticker=='B3SA3.SAO':
-		company='Brasil, Bolsa Balcão'
-	if stock_ticker=='PETR4.SAO':
-		company='Petrobras'
-	else:
-		company=stock_ticker
-	print('O ticker '+stock_ticker+' é da empresa '+company)
+company=''
+if stock_ticker=='B3SA3.SAO':
+	company='Brasil, Bolsa Balcão'
+if stock_ticker=='PETR4.SAO':
+	company='Petrobras'
+else:
+	company=stock_ticker
+print('O ticker '+stock_ticker+' é da empresa '+company)
 
 i=0
 
@@ -59,12 +59,11 @@ def alpha_vantage_api():
 #ACTIVATOR:
 if b1==1:
 	alpha_vantage_api()
-	print('This ticker is not active, you can change the ticker or its state, then restart this software')
-	quit()
 else:
-	print(symbol,' não está habilitado/ is not active')
+	print(symbol,' não está habilitado/ is not active'+'\nThis ticker is not active, you can change the ticker or its state, then restart this software')
+	quit()
 
-
+#START SQLITE3:
 conn=sqlite3.connect('shares.db')
 c=conn.cursor()
 
@@ -95,13 +94,20 @@ def select():
 
 def update():
 	try:
-		c.execute('SELECT * FROM shares')
-		[print(row) for row in c.fetchall()]
-		c.execute('''UPDATE shares SET value = (?) WHERE value = (?)''',(data_daily_lastClosingPrice, data_daily_lastClosingPrice))
+		c.execute("DELETE FROM shares WHERE date = (?)",(daterow))
+		from alpha_vantage.timeseries import TimeSeries
+		import pandas as pd
+		API_Key='KY74URGMWMKH6FJ8'
+		ts = TimeSeries (key=API_Key, output_format = "pandas")
+		data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
+		daterow=meta_data['3. Last Refreshed']
+		data_daily_lastClosingPrice = data_daily['4. close'][i]
+		date=daterow
+		c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
 		conn.commit()
 		print('Updated')
 	except:
-		print('Hi there, Python is got limitations.\nPlease, delete doubled and last seven days data of the target ticker throught a sqlite IDE,\nthen run this software again. Thank you.')
+		print('Hi there, Python is got limitations.\nPlease, delete doubled and last seven days data of the target ticker throught a sqlite IDE,\nthen run this software again. Thank you.\n')
 		print('Olá, Python tem limitações,\nfavor apague linhas de banco de dados repetidas e dos últimos 7 dias para o ticker de ação específico por editor de SQLite3,\nentão rode este software de novo. Obrigado.')
 
 def lead_to_insert_or_update():
@@ -161,11 +167,11 @@ lead_to_insert_or_update()
 
 #CHOOSE SPECIFIC FUNTIONS:
 
-#createtable()
-#lead_to_insert_or_update()
-#insert()
-#select()
-#show_database()
-#delete_ticker()
+# createtable()
+# lead_to_insert_or_update()
+# insert()
+# select()
+# show_database()
+# delete_ticker()
 
 conn.close()
