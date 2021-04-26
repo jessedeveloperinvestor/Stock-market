@@ -21,6 +21,10 @@ O database a ser criado terá o nome Shares.db e será armazenado na mesma pasta
 #pip install requests
 #pip install time
 #pip install datetime
+  Para cada ticker, é necessário executar o programa Shares.py uma/mais vez, mudando antes o valor referido de symbol na linha 35 e, talvez, o valor (0 ou 1) de b1, b2, b3 etc; o software executa automaticamente a importação dos últimos 5 dias úteis (o eqquivalente a uma semana de pregão).
+  
+  ***Na linha 148/final há uma messagem para o usuário esperar e nas linhas próximas um time.sleep(100); todas estas linhas podem bloqueadas ou apagadas, caso se tenha posse de uma chave do Alpha Vantage API de um plano pago, pois assim, não se atingirá o limite de requerimentos feitos por minuto e por dia.
+  
 *IMPORTANTE: Caso haja um update (aparecerá 'updating'), então é necessário rodar o código fonte de novo para todos os tickers, pois todos os dados do último dia/data foram apagados (esta é a melhor maneira encontrada até hoje, por alguém de se faxer isto com Python3 e SQLite3).
   Ou seja, estas são bibliotecas do Python necessárias ao funcionamento do software.
 Na seção #SHARES: pode-se cadastrar ativos/tickers diversos no software.
