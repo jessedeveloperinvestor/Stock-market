@@ -30,3 +30,29 @@ O #TICKERS' DESCRIPTOR: é um espaço para, inserindo mais:
 ...que se possa nomear os tickers, visto que o API da Alpha Vantage e diversos APIs financeiros não ofertam dados sobre os nomes das empresas correspondentes aos tickers.
   A seção #ALPHA VANTAGE API: inicia a importação de dados do API e armazenamento em listas/variáveis.
 A seção #ACTIVATOR: é a lógica que apenas permite executar o funcionamento padrão do código principal (Shares.py, com função lead_to_insert_or_update() sendo prioritária) em ativos/tickers habilitados.
+Em def createtable(): esta função está em ambos arquivos de Python para permitir a total operação por apenas o script principal, próximo ao final do código em:
+#CHOOSE SPECIFIC FUNTIONS: a função pode ser acionada, desabilitando as outras funções como:
+createtable()
+lead_to_insert_or_update()
+insert()
+select()
+show_database()
+delete_ticker()
+*Aliás, cada uma destas funções deve ser habilitada ou não independentemente, sendo que o código fonte original automaticamente utiliza a lead_to_insert_or_update() e nela decide-se se um ticker será atualizado (update(), outra função) ou inserido no database (insert()).
+Por exmplo, para usar uma única função específica, pode-se deixar as últimas linhas do main script como:
+
+#CHOOSE SPECIFIC FUNTIONS:
+
+# createtable()
+# lead_to_insert_or_update()
+# insert()
+# select()
+show_database()
+# delete_ticker()
+
+conn.close()
+
+  Desta forma, apenas a função especial show_database() que não possui # será executada e imprimirá no terminal/IDE uma espécie de lista em formato de tabela com o todo conteúdo do database/banco de dados.
+A função insert() permite inserir dados manualmente no database, select() permite visualizar dados específicos/ou não (funcionando como SQL query) e, caso necesário - posteriormente adaptada, Python query/filtro também.
+
+	Obrigado.
