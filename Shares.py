@@ -59,6 +59,8 @@ def alpha_vantage_api():
 #ACTIVATOR:
 if b1==1:
 	alpha_vantage_api()
+	print('This ticker is not active, you can change the ticker or its state, then restart this software')
+	quit()
 else:
 	print(symbol,' não está habilitado/ is not active')
 
