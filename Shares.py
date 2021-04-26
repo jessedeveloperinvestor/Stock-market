@@ -94,7 +94,8 @@ def select():
 
 def update():
 	try:
-		c.execute("DELETE FROM shares WHERE date = (?)",(daterow))
+		c.execute('DELETE FROM shares WHERE(SELECT DISTINCT date from shares)')
+		#c.execute("DELETE FROM shares WHERE date = (?)",(daterow))
 		from alpha_vantage.timeseries import TimeSeries
 		import pandas as pd
 		API_Key='KY74URGMWMKH6FJ8'
@@ -167,11 +168,11 @@ lead_to_insert_or_update()
 
 #CHOOSE SPECIFIC FUNTIONS:
 
-# createtable()
-# lead_to_insert_or_update()
-# insert()
-# select()
-# show_database()
-# delete_ticker()
+#createtable()
+#lead_to_insert_or_update()
+#insert()
+#select()
+show_database()
+#delete_ticker()
 
 conn.close()
