@@ -1,3 +1,18 @@
+#STock-market
+
+
+~DESCRIÇÃO DO CÓDIGO FONTE:
+  O código fonte inicia-se com o arquivo Shares_database_builder.py para criar um database em SQLite3, tal código gera um arquivo chamado Shares.db.
+Então o arquivo Shares.py foi desenvolvido para ser customizável, possui várias funções criadas que podem ser chamadas individualmente e que, normalmente, algumas são chamadas.
+Fiz diversos experimentos para desenvolver o Shares de maneira mais automatizada e que, natural e automaticamente importasse, inserisse e atualizasse todos os dados de todos os tickers automaticamente, mas aparentemente o Python não reconhece uma função dentro de outra função (ou várias).
+  >>>>>O software cumpre todos os requisitos listados no arquivo projeto_alphavantage_abr21.pdf.
+
+~ESPECIFICAÇÕES PARA CRIAÇÃO DO BANCO DE DADOS:
+  É necessário instalar SQLite3, Python3, pip e as bibliotecas listadas no início do seguinte arquivo Shares_database_builder.py, através do terminal do OS (Windows, Linux ou MacOS) e executá-lo.
+O database a ser criado terá o nome Shares.db e será armazenado na mesma pasta dos scripts em Python (que também devem estar juntos)
+
+~DETALHES DE USO:
+  O software principal é o Shares.py que começa com (e também o Shares_database_builder.py começa assim):
 #RUN THE FOLLOWING LINES ON TERMINAL:
 #pip install alpha_vantage
 #pip install pandas
@@ -6,174 +21,39 @@
 #pip install requests
 #pip install time
 #pip install datetime
-
-#CREATE TABLE - Run the function createtable() to create the table
-from alpha_vantage.timeseries import TimeSeries
-import pandas as pd
-import datetime as dt
-import requests
-import sqlite3
-import time
-import datetime
-import json
-
-#SHARES:
-a1='B3SA3'
-a2='PETR4'
-a3=''
-a4=''
-a5=''
-
-#SHARES' ACTIVATOR:
-b1=1
-b2=1
-b3=0
-b4=0
-b5=0
-
-#SELECT TICKER:
-symbol=a1
-stock_ticker=symbol+'.SAO'
-
-#TICKERS' DESCRIPTOR:
-company=''
-if stock_ticker=='B3SA3.SAO':
-	company='Brasil, Bolsa Balcão'
-if stock_ticker=='PETR4.SAO':
-	company='Petrobras'
-else:
-	company=stock_ticker
-print('O ticker '+stock_ticker+' é da empresa '+company)
-
-i=0
-
-#ALPHA VANTAGE API:
-def alpha_vantage_api():
-	API_Key='KY74URGMWMKH6FJ8'
-	ts = TimeSeries (key=API_Key, output_format = "pandas")
-	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-	        # data_daily['column name'][row number]
-	daterow=meta_data['3. Last Refreshed'][i]
-	data_daily_lastClosingPrice = data_daily['4. close'][i]
-
-#ACTIVATOR:
-if b1==1:
-	alpha_vantage_api()
-else:
-	print(symbol,' não está habilitado/ is not active'+'\nThis ticker is not active, you can change the ticker or its state, then restart this software')
-	quit()
-
-#START SQLITE3:
-conn=sqlite3.connect('shares.db')
-c=conn.cursor()
-
-def createtable():
-	c.execute("""CREATE TABLE shares (
-				ticker text,
-				date integer,
-				price real
-	)""")
-	conn.commit()
-
-def insert():
-	from alpha_vantage.timeseries import TimeSeries
-	import pandas as pd
-	API_Key='KY74URGMWMKH6FJ8'
-	ts = TimeSeries (key=API_Key, output_format = "pandas")
-	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-	daterow=meta_data['3. Last Refreshed']
-	data_daily_lastClosingPrice = data_daily['4. close'][i]
-	date=daterow
-	c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
-	conn.commit()
-
-def select():
-	c.execute("SELECT * FROM shares WHERE ticker='B3SA3.SAO'")
-	#print(c.fetchall())
-	print(c.fetchone())
-
-def update():
-	try:
-		c.execute('DELETE FROM shares WHERE(SELECT DISTINCT date from shares)')
-		#c.execute("DELETE FROM shares WHERE date = (?)",(daterow))
-		from alpha_vantage.timeseries import TimeSeries
-		import pandas as pd
-		API_Key='KY74URGMWMKH6FJ8'
-		ts = TimeSeries (key=API_Key, output_format = "pandas")
-		data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-		daterow=meta_data['3. Last Refreshed']
-		data_daily_lastClosingPrice = data_daily['4. close'][i]
-		date=daterow
-		c.execute('''INSERT INTO  shares (ticker, date, price) VALUES (?, ?, ?) ''',(stock_ticker, date, data_daily_lastClosingPrice))
-		conn.commit()
-		print('Updated, so this means that all the data inserted into the database today was deleted (this is the best shot on Python).\n)Now, you need to reinsert all the other tickers.\nIf needed, contact the developer Jesse:\nhttps://relaxed-dijkstra-f2b25b.netlify.app/')
-	except:
-		print('Hi there, Python is got limitations.\nPlease, delete doubled and last seven days data of the target ticker throught a sqlite IDE,\nthen run this software again. Thank you.\n')
-		print('Olá, Python tem limitações,\nfavor apague linhas de banco de dados repetidas e dos últimos 7 dias para o ticker de ação específico por editor de SQLite3,\nentão rode este software de novo. Obrigado.')
-
-def lead_to_insert_or_update():
-	from alpha_vantage.timeseries import TimeSeries
-	import pandas as pd
-	API_Key='KY74URGMWMKH6FJ8'
-	ts = TimeSeries (key=API_Key, output_format = "pandas")
-	data_daily, meta_data = ts.get_daily(symbol=stock_ticker, outputsize ='compact')
-	daterow=meta_data['3. Last Refreshed']
-	data_daily_lastClosingPrice = data_daily['4. close'][i]
-	c.execute("SELECT * FROM shares")
-	k=list(c.fetchall())
-	y=str(k)
-	stk=str(stock_ticker)
-	dt=str(daterow)
-	if stk in y:
-		if dt in y:
-			print('updating')
-			update()
-	else:
-		print('inserting')
-		insert()
-
-def delete_ticker():
-	try:
-		c.execute("DELETE FROM shares WHERE ticker = 'B3SA3.SAO'")
-	except:
-		c.execute('DELETE FROM shares')
-		conn.commit()
-
-def show_database():
-	c.execute('SELECT * FROM shares')
-	[print(row) for row in c.fetchall()]
-
-#USE THIS TO INSERT THE LAST WEEK DATA:
-
+*IMPORTANTE: Caso haja um update (aparecerá 'updating'), então é necessário rodar o código fonte de novo para todos os tickers, pois todos os dados do último dia/data foram apagados (esta é a melhor maneira encontrada até hoje, por alguém de se faxer isto com Python3 e SQLite3).
+  Ou seja, estas são bibliotecas do Python necessárias ao funcionamento do software.
+Na seção #SHARES: pode-se cadastrar ativos/tickers diversos no software.
+Na seção #SHARES' ACTIVATOR: pode-se habilitar um ticker definindo b1=1, desabilitar b1=0; o número depois da letra b corresponde ao número em a1, a2 etc que representa a ordem do ticker escolhido.
+O #TICKERS' DESCRIPTOR: é um espaço para, inserindo mais:
+	if stock_ticker=='B3SA3.SAO':
+		company='Brasil, Bolsa Balcão'
+...que se possa nomear os tickers, visto que o API da Alpha Vantage e diversos APIs financeiros não ofertam dados sobre os nomes das empresas correspondentes aos tickers.
+  A seção #ALPHA VANTAGE API: inicia a importação de dados do API e armazenamento em listas/variáveis.
+A seção #ACTIVATOR: é a lógica que apenas permite executar o funcionamento padrão do código principal (Shares.py, com função lead_to_insert_or_update() sendo prioritária) em ativos/tickers habilitados.
+Em def createtable(): esta função está em ambos arquivos de Python para permitir a total operação por apenas o script principal, próximo ao final do código em:
+#CHOOSE SPECIFIC FUNTIONS: a função pode ser acionada, desabilitando as outras funções como:
+createtable()
 lead_to_insert_or_update()
-message='Please, wait 10 seconds, this is a test version and there is a limit for API calls'
-i=1
-print(message)
-time.sleep(100)
-lead_to_insert_or_update()
-i=2
-print(message)
-time.sleep(100)
-lead_to_insert_or_update()
-i=3
-print(message)
-time.sleep(100)
-lead_to_insert_or_update()
-i=4
-print(message)
-time.sleep(100)
-lead_to_insert_or_update()
-
-
+insert()
+select()
+show_database()
+delete_ticker()
+*Aliás, cada uma destas funções deve ser habilitada ou não independentemente, sendo que o código fonte original automaticamente utiliza a lead_to_insert_or_update() e nela decide-se se um ticker será atualizado (update(), outra função) ou inserido no database (insert()).
+Por exmplo, para usar uma única função específica, pode-se deixar as últimas linhas do main script como:
 
 #CHOOSE SPECIFIC FUNTIONS:
 
-#createtable()
-#lead_to_insert_or_update()
-#insert()
-#select()
+# createtable()
+# lead_to_insert_or_update()
+# insert()
+# select()
 show_database()
-#delete_ticker()
+# delete_ticker()
 
 conn.close()
-print('For help, contact the developer Jesse:\nhttps://relaxed-dijkstra-f2b25b.netlify.app/')
+
+  Desta forma, apenas a função especial show_database() que não possui # será executada e imprimirá no terminal/IDE uma espécie de lista em formato de tabela com o todo conteúdo do database/banco de dados.
+A função insert() permite inserir dados manualmente no database, select() permite visualizar dados específicos/ou não (funcionando como SQL query) e, caso necesário - posteriormente adaptada, Python query/filtro também.
+
+	Obrigado.
