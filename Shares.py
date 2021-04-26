@@ -35,9 +35,6 @@ b5=0
 symbol=a1
 stock_ticker=symbol+'.SAO'
 
-def looping_different_tickers():
-	message='Please, wait 10 seconds, this is a test version and there is a limit for API calls'
-
 #TICKERS' DESCRIPTOR:
 	company=''
 	if stock_ticker=='B3SA3.SAO':
