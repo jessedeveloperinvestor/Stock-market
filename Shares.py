@@ -94,8 +94,7 @@ def select():
 
 def update():
 	try:
-		c.execute('DELETE FROM shares WHERE(SELECT DISTINCT date from shares)')
-		#c.execute("DELETE FROM shares WHERE date = (?)",(daterow))
+		c.execute('DELETE FROM shares WHERE(SELECT DISTINCT date from shares(SELECT DISTINCT price from shares))')
 		from alpha_vantage.timeseries import TimeSeries
 		import pandas as pd
 		API_Key='KY74URGMWMKH6FJ8'
@@ -176,3 +175,4 @@ show_database()
 #delete_ticker()
 
 conn.close()
+print('For help, contact the developer Jesse:\nhttps://relaxed-dijkstra-f2b25b.netlify.app/')
